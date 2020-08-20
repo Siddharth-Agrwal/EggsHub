@@ -60,4 +60,17 @@ function seedDB(){
      }); 
  }
  
+// var county= { name: "Pakistan",
+//   total_population: "21.22 Cr",
+//   eggs_produced: "3023 Ton",
+//   eggs_consumption: "4113 Ton"};
+// Country.create(county)
+// .then(function(res){
+//     console.log(res);
+// })
+// .catch(function(err){
+//     console.log(err);
+// });
+
+
 module.exports = seedDB;

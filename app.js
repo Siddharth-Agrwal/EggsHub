@@ -8,12 +8,14 @@ const express       = require('express'),
       Campground    = require("./models/campground.js"),
       Comment       = require("./models/comment.js"),
       Country       = require("./models/countries.js"),
+      flash         = require("connect-flash"),
       methodOverride= require("method-override"),
       SeedDB        = require("./seeds.js");
 
 const   indexRoutes       = require("./routes/index"),
         campgroundRoutes  = require("./routes/campgrounds"),
-        commentRoutes     = require("./routes/comments");
+        commentRoutes     = require("./routes/comments"),
+        add_Routes        = require("./routes/additional");
 
 // SeedDB();
 mongoose.connect('mongodb+srv://Siddharth:jojoba998@cluster0.vtnte.mongodb.net/egghub?retryWrites=true&w=majority', {
@@ -26,6 +28,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine','ejs');
 app.use(express.static("public"));
 app.use(methodOverride("_method"));
+app.use(flash());
 
 // Passport Configuration
 //=================================
@@ -42,65 +45,18 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use(function(req, res, next){
     res.locals.currentUser = req.user;
+    res.locals.show_page = "#";
+    res.locals.error= req.flash("error");
+    res.locals.success= req.flash("success");
     next();
-});
-
-app.use(function(req, res, next){
-  show_page = "#";
-  next();
 });
 
 
 app.use(indexRoutes);
 app.use(campgroundRoutes);
 app.use(commentRoutes);
+app.use(add_Routes);
 
-
-// var county= { name: "Pakistan",
-//   total_population: "21.22 Cr",
-//   eggs_produced: "3023 Ton",
-//   eggs_consumption: "4113 Ton"};
-// Country.create(county)
-// .then(function(res){
-//     console.log(res);
-// })
-// .catch(function(err){
-//     console.log(err);
-// });
-
-app.get("/dashboard", function(req,res){
-    res.render("dashboard",{show_page: "dashboard"});
-});
-
-app.get("/supplymap", function(req,res){
-  res.render("supplymap");
-});
-
-app.get("/demandmap", function(req,res){
-  res.render("demandmap");
-});
-
-app.get("/about", function(req,res){
-  res.render("about", {show_page: "about"});
-});
-
-app.get("/contact", function(req, res){
-  res.render("contact");
-});
-
-app.get("/compare", function(req, res){
-  res.render("compare",{show_page: "compare"});
-});
-
-app.get("/compare/ans", function(req,res){
-    Country.find({name: req.query.country1})
-      .then(function(c1){
-        Country.find({name: req.query.country2})
-          .then(function(c2){
-            res.render("compare_ans", {c1 : c1, c2: c2});
-          });
-      });
-});
 
 app.listen(process.env.PORT || 3000, function(){
     console.log("Connected");
