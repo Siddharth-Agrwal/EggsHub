@@ -1,0 +1,31 @@
+<%- include("./partials/header") %>
+
+<br><br>
+<h2 style="text-align: center;">Comparing <%=c1.name %> &  <%=c2.name %></h2>
+<br><br>
+    <table class="table" >
+        <thead>
+        <tr>
+            <th scope="col">Country Name</th>
+            <th scope="col">Total Population</th>
+            <th scope="col">Eggs Produced</th>
+            <th scope="col">Eggs Consumed</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row"><%=c1[0].name %></th>
+            <td><%= c1[0].total_population %></td>
+            <td><%=c1[0].eggs_produced %></td>
+            <td><%=c1[0].eggs_consumption%></td>
+        </tr>
+        <tr>
+            <th scope="row"><%=c2[0].name %></th>
+            <td><%= c2[0].total_population %></td>
+            <td><%=c2[0].eggs_produced %></td>
+            <td><%=c2[0].eggs_consumption%></td>
+        </tr>
+        </tbody>
+    </table>
+
+<%- include("./partials/footer") %>
